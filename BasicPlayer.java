@@ -4,6 +4,11 @@ public class BasicPlayer implements Player {
     private final String name;
     private final List<Card> hand;
 
+    @Override
+    public void removeCardFromHand(Card card) {
+        hand.remove(card);
+    }
+
     public BasicPlayer(String name) {
         this.name = name;
         this.hand = new ArrayList<>();

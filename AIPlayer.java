@@ -5,6 +5,11 @@ public class AIPlayer implements Player {
     private List<Card> hand;
     private ScoreCalculator scoreCalculator;
 
+    @Override
+    public void removeCardFromHand(Card card) {
+        hand.remove(card);
+    }
+
     public AIPlayer(String name, ScoreCalculator scoreCalculator) {
         this.name = name;
         this.scoreCalculator = scoreCalculator;
