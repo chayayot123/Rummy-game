@@ -1,21 +1,20 @@
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+
 public class Deck {
-    private List<Card> cards;
+    private final List<Card> cards;
 
     public Deck() {
-        // Create a deck of standard playing cards
         cards = new ArrayList<>();
-        String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
-        String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9",
-                        "10", "Jack", "Queen", "King", "Ace"};
-        for (String suit : suits) {
-            for(String rank : ranks) {
-                cards.add(new StandardCard(rank, suit));
+
+        // Populate the deck with 52 cards
+        for (Card.Suit suit : Card.Suit.values()) {
+            for (Card.Rank rank : Card.Rank.values()) {
+                Card card = new Card(suit, rank);
+                cards.add(card);
             }
         }
-        shuffle();
     }
 
     public void shuffle() {
@@ -24,8 +23,16 @@ public class Deck {
 
     public Card draw() {
         if (cards.isEmpty()) {
-            return null;
+            throw new IllegalStateException("The deck is empty.");
         }
-        return cards.remove(0);
+        return cards.remove(cards.size() - 1);
+    }
+
+    public boolean isEmpty() {
+        return cards.isEmpty();
+    }
+
+    public void addCards(List<Card> newCards) {
+        cards.addAll(newCards);
     }
 }
