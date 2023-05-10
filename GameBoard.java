@@ -15,10 +15,10 @@ public class GameBoard {
         this.players = players;
         this.currentPlayerIndex = 0;
         this.gameWon = false;
-
+    
         // Shuffle the deck
         this.deck.shuffle();
-
+    
         // Deal cards to each player
         for (Player player : this.players) {
             List<Card> hand = new ArrayList<>();
@@ -27,8 +27,11 @@ public class GameBoard {
                 hand.add(card);
             }
             player.receiveInitialHand(hand);
+            if (player instanceof BasicPlayer) {
+                this.humanPlayer = (BasicPlayer) player;
+            }
         }
-
+    
         // Place the first card on the discard pile
         Card firstCard = this.deck.draw();
         this.discardPile.addCard(firstCard);
@@ -55,6 +58,10 @@ public class GameBoard {
             // Move on to the next player
             this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
         }
+    }
+
+    public boolean isDeckEmpty() {
+        return this.deck.isEmpty() && this.discardPile.isEmpty();
     }
 
     public Card drawCard() {

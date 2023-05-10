@@ -23,4 +23,8 @@ public class DiscardPile extends Observable {
         pile.clear();
         return null;
     }
+
+    public boolean isEmpty() {
+        return false;
+    }
 }

@@ -4,6 +4,7 @@ public class BasicPlayer implements Player {
     private final String name;
     private final List<Card> hand;
 
+    
     @Override
     public void removeCardFromHand(Card card) {
         hand.remove(card);
@@ -29,11 +30,26 @@ public class BasicPlayer implements Player {
 
     @Override
     public void takeTurn(GameBoard gameBoard) {
-        // TODO: Implement the logic for the player's turn
+        // Draw a card
+        Card drawnCard = gameBoard.drawCard();
+        receiveCard(drawnCard);
+        System.out.println(getName() + " drew a card: " + drawnCard);
+
+        // Discard a card
+        Card cardToDiscard = selectCardToDiscard();
+        removeCardFromHand(cardToDiscard);
+        gameBoard.addToDiscardPile(cardToDiscard);
+        System.out.println(getName() + " discarded a card: " + cardToDiscard);
+    }
+    
+    private Card selectCardToDiscard() {
+        // Choose a random card to discard
+        int index = (int) (Math.random() * hand.size());
+        return hand.get(index);
     }
 
     @Override
     public void receiveInitialHand(List<Card> cards) {
-        // TODO
+        this.hand.addAll(cards);
     }
 }

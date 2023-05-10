@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class AIPlayer implements Player {
     private String name;
@@ -9,6 +11,7 @@ public class AIPlayer implements Player {
     public void removeCardFromHand(Card card) {
         hand.remove(card);
     }
+    
 
     public AIPlayer(String name, ScoreCalculator scoreCalculator) {
         this.name = name;
@@ -47,11 +50,32 @@ public class AIPlayer implements Player {
 
     @Override
     public void takeTurn(GameBoard gameBoard) {
-        // TODO: Implement AI player logic for taking a turn
+        // Draw a card
+        Card drawnCard = gameBoard.drawCard();
+        receiveCard(drawnCard);
+        System.out.println(getName() + " drew a card: " + drawnCard);
+
+        // Discard a card
+        Card cardToDiscard = selectCardToDiscard(gameBoard.getTopCardOnDiscardPile());
+        removeCardFromHand(cardToDiscard);
+        gameBoard.addToDiscardPile(cardToDiscard);
+        System.out.println(getName() + " discarded a card: " + cardToDiscard);
+    }
+
+    private Card selectCardToDiscard(Card topCard) {
+        // Choose the first card that's not the same suit as the top card on the discard pile
+        for (Card card : hand) {
+            if (card.getSuit() != topCard.getSuit()) {
+                return card;
+            }
+        }
+        // If all cards are the same suit, choose a random card to discard
+        int index = (int) (Math.random() * hand.size());
+        return hand.get(index);
     }
 
     @Override
     public void receiveInitialHand(List<Card> cards) {
-        // TODO
+        this.hand = new ArrayList<>(cards);
     }
 }
