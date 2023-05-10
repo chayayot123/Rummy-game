@@ -66,4 +66,12 @@ public class BasicPlayer implements Player {
         return hand;
     }
 
+    public int calculateScore() {
+        int score = 0;
+        for (Card card : hand) {
+            score += card.getRank().getValue();
+        }
+        return score;
+    }
+
 }

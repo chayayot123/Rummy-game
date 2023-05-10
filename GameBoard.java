@@ -39,8 +39,8 @@ public class GameBoard {
     }
 
     public void playGame() {
-        // Play the game until someone wins
-        while (!this.gameWon) {
+        // Play the game until someone wins or no more cards can be drawn
+        while (!this.gameWon && !isDeckEmpty()) {
             Player currentPlayer = this.players.get(this.currentPlayerIndex);
 
             // Display the current state of the game
@@ -59,11 +59,32 @@ public class GameBoard {
             // Move on to the next player
             this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.size();
         }
+
+        // If the game ends because there are no more cards to draw, calculate scores
+        if (!this.gameWon) {
+            System.out.println("No more cards can be drawn. The game ends.");
+            calculateScores();
+        }
+    }
+    
+    public void calculateScores() {
+        // Calculate scores for each player
+        for (Player player : players) {
+            if (player instanceof AIPlayer) {
+                AIPlayer aiPlayer = (AIPlayer) player;
+                System.out.println(player.getName() + "'s score: " + aiPlayer.calculateScore());
+            } else {
+                // Add a score calculation method for BasicPlayer if needed
+                BasicPlayer basicPlayer = (BasicPlayer) player;
+                System.out.println(player.getName() + "'s score: " + basicPlayer.calculateScore());
+            }
+        }
     }
 
     public boolean isDeckEmpty() {
-        return this.deck.isEmpty() && this.discardPile.isEmpty();
+        return this.deck.isEmpty();
     }
+    
 
     public Card drawCard() {
         if (this.deck.isEmpty()) {
