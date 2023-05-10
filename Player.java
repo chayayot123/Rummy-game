@@ -1,6 +1,7 @@
 import java.util.List;
 
 public interface Player {
+    List<Card> layDownMeld();
     void receiveCard(Card card);
     void takeTurn(GameBoard gameBoard);
     void receiveInitialHand(List<Card> cards);

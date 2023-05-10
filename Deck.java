@@ -23,7 +23,7 @@ public class Deck {
 
     public Card draw() {
         if (cards.isEmpty()) {
-            throw new IllegalStateException("The deck is empty.");
+            return null;
         }
         return cards.remove(cards.size() - 1);
     }

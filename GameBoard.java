@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class GameBoard {
     private Deck deck;
@@ -22,7 +23,7 @@ public class GameBoard {
         // Deal cards to each player
         for (Player player : this.players) {
             List<Card> hand = new ArrayList<>();
-            for (int i = 0; i < 7; i++) {
+            for (int i = 0; i < 13; i++) {
                 Card card = this.deck.draw();
                 hand.add(card);
             }
@@ -66,20 +67,38 @@ public class GameBoard {
 
     public Card drawCard() {
         if (this.deck.isEmpty()) {
-            // Shuffle the discard pile and use it as the new deck
-            List<Card> cards = this.discardPile.removeAllCards();
-            this.deck.addCards(cards);
-            this.deck.shuffle();
+            if (this.discardPile.isEmpty()) {
+                // Both the deck and discard pile are empty, end the game
+                this.gameWon = true;
+                return null;
+            } else {
+                // Shuffle the discard pile and use it as the new deck
+                List<Card> cards = this.discardPile.removeAllCards();
+                if (cards != null && !cards.isEmpty()) {
+                    this.deck.addCards(cards);
+                }
+                this.deck.shuffle();
+            }
         }
         return this.deck.draw();
     }
 
     public void discardCard(Card card) {
         Player currentPlayer = this.players.get(this.currentPlayerIndex);
-
+    
         if (currentPlayer == humanPlayer) {
-            // TODO: Prompt the human player to select a card to discard
-            // and add it to the discard pile
+            try (// Prompt the human player to select a card to discard
+            Scanner scanner = new Scanner(System.in)) {
+                System.out.println("Select a card to discard:");
+                List<Card> hand = currentPlayer.getHand();
+                for (int i = 0; i < hand.size(); i++) {
+                    System.out.println(i + 1 + ". " + hand.get(i));
+                }
+                int selectedIndex = scanner.nextInt() - 1;
+                Card cardToDiscard = hand.get(selectedIndex);
+                currentPlayer.removeCardFromHand(cardToDiscard);
+                this.discardPile.addCard(cardToDiscard);
+            }
         } else {
             // AI player - choose a random card to discard
             List<Card> hand = currentPlayer.getHand();

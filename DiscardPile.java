@@ -16,6 +16,9 @@ public class DiscardPile extends Observable {
     }
 
     public Card getTopCard() {
+        if (pile.isEmpty()) {
+            return null;
+        }
         return pile.get(pile.size() - 1);
     }
 

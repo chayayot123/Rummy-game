@@ -10,17 +10,17 @@ public class BasicPlayer implements Player {
         hand.remove(card);
     }
 
-    public BasicPlayer(String name) {
-        this.name = name;
-        this.hand = new ArrayList<>();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<Card> getHand() {
-        return hand;
+    @Override
+    public List<Card> layDownMeld() {
+        if (hand.size() < 3) {
+            return new ArrayList<>();
+        }
+        List<Card> meld = new ArrayList<>();
+        meld.add(hand.get(0));
+        meld.add(hand.get(1));
+        meld.add(hand.get(2));
+        hand.removeAll(meld);
+        return meld;
     }
 
     @Override
@@ -41,6 +41,11 @@ public class BasicPlayer implements Player {
         gameBoard.addToDiscardPile(cardToDiscard);
         System.out.println(getName() + " discarded a card: " + cardToDiscard);
     }
+
+    @Override
+    public void receiveInitialHand(List<Card> cards) {
+        this.hand.addAll(cards);
+    }
     
     private Card selectCardToDiscard() {
         // Choose a random card to discard
@@ -48,8 +53,17 @@ public class BasicPlayer implements Player {
         return hand.get(index);
     }
 
-    @Override
-    public void receiveInitialHand(List<Card> cards) {
-        this.hand.addAll(cards);
+    public BasicPlayer(String name) {
+        this.name = name;
+        this.hand = new ArrayList<>();
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Card> getHand() {
+        return hand;
+    }
+
 }
