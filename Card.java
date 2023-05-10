@@ -1,10 +1,20 @@
 public class Card {
     // Enum for the suits of the cards
     public enum Suit {
-        CLUBS,
-        DIAMONDS,
-        HEARTS,
-        SPADES
+        CLUBS('C'),
+        DIAMONDS('D'),
+        HEARTS('H'),
+        SPADES('S');
+
+        private final char symbol;
+
+        Suit(char symbol) {
+            this.symbol = symbol;
+        }
+
+        public char getSymbol() {
+            return symbol;
+        }
     }
 
     // Enum for the ranks of the cards
@@ -52,6 +62,7 @@ public class Card {
 
     @Override
     public String toString() {
-        return rank + " of " + suit;
+        String rankDisplay = (rank == Rank.JACK || rank == Rank.QUEEN || rank == Rank.KING) ? rank.toString().substring(0, 1) : Integer.toString(rank.getValue());
+        return rankDisplay + suit.getSymbol();
     }
 }
